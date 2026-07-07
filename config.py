@@ -1,7 +1,14 @@
 import os
 import torch
 
-DEVICE = torch.device("cpu")
+if torch.cuda.is_available():
+    DEVICE = torch.device("cuda")
+else:
+    try:
+        import torch_directml
+        DEVICE = torch_directml.device()
+    except ImportError:
+        DEVICE = torch.device("cpu")
 
 DATA_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 SAMPLES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "samples")
